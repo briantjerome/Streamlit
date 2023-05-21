@@ -1,11 +1,12 @@
 import streamlit as st
 import tensorflow as tf
-from tensorflow.keras.preprocessing import image
+from tensorflow import keras
+from PIL import Image
 import numpy as np
 
 @st.cache(allow_output_mutation=True)
 def load_model():
-    model = tf.keras.models.load_model('best_model.h5')
+    model = keras.models.load_model('best_model.h5')
     return model
 
 model = load_model()
@@ -19,10 +20,10 @@ file = st.file_uploader("Choose a fashion accessory image (bag, shirt, etc.) fro
 if file is None:
     st.text("Please upload an image file")
 else:
-    img = image.load_img(file, target_size=(28, 28), color_mode="rgb")
-    img_array = image.img_to_array(img)
+    img = Image.open(file).convert('L')
+    img = img.resize((28, 28))
+    img_array = np.array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
-    img_array = img_array / 255.0
 
     prediction = model.predict(img_array)
     predicted_class_index = np.argmax(prediction)
