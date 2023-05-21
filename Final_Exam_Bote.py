@@ -19,13 +19,13 @@ file = st.file_uploader("Choose a fashion accessory image (bag, shirt, etc.) fro
 if file is None:
     st.text("Please upload an image file")
 else:
-    img = image.load_img(file, target_size=(128, 128), color_mode="grayscale")
+    img = image.load_img(file, target_size=(28, 28), color_mode="grayscale")
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
-    img_array /= 255.0
+    img_array = img_array / 255.0
 
     prediction = model.predict(img_array)
-    predicted_class_index = np.argmax(prediction[0])
+    predicted_class_index = np.argmax(prediction)
     class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress',
                    'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
