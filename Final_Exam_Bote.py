@@ -21,15 +21,15 @@ if file is None:
 else:
     img = image.load_img(file, target_size=(28, 28), grayscale=True)
     img_array = image.img_to_array(img)
-    img_array /= 255.0
     img_array = np.expand_dims(img_array, axis=0)
+    img_array /= 255.0
 
     prediction = model.predict(img_array)
     class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress',
                    'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-    predicted_class_index = np.argmax(prediction[0])
-    predicted_class = class_names[predicted_class_index]
+    predicted_classes = np.argmax(prediction, axis=1)
+    predicted_class_names = [class_names[class_index] for class_index in predicted_classes]
 
     st.image(img, use_column_width=True)
-    st.success("Predicted Class: " + predicted_class)
+    st.success("Predicted Class: " + predicted_class_names[0])
