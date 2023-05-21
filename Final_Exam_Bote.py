@@ -24,12 +24,9 @@ else:
     img_array = np.expand_dims(img_array, axis=0)
     img_array /= 255.0
 
-    prediction = model.predict(img_array)
+    predicted_class = model.predict_classes(img_array)[0]
     class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress',
                    'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-    predicted_classes = np.argmax(prediction, axis=1)
-    predicted_class_names = [class_names[class_index] for class_index in predicted_classes]
-
     st.image(img, use_column_width=True)
-    st.success("Predicted Class: " + predicted_class_names[0])
+    st.success("Predicted Class: " + class_names[predicted_class])
