@@ -1,0 +1,136 @@
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, ImageBackground, FlatList} from 'react-native';
+import GoalItem from './components/GoalItem';
+import GoalInput from './components/GoalInput';
+
+export default function App() {
+  const [courseGoals, setCourseGoals] = useState([]);
+
+  function addGoalHandler(enteredGoalText) {
+    setCourseGoals((currentCourseGoals) =>
+     [...currentCourseGoals,
+      {text: enteredGoalText, key: Math.random().toString()}]);   
+  }  
+
+  return (
+    <ImageBackground
+    source={require('../mod2/Superman.jpg')} 
+    style={styles.backgroundImage}>
+       <View style={styles.appContainer}>
+            <Text style={styles.apphead}>EMTECH</Text>
+        <GoalInput onAddGoal={addGoalHandler}/>
+
+      <View style={styles.goalListContainer}>
+        <FlatList data={courseGoals} renderItem={(ItemData) => {
+          return(
+            <GoalItem text={ItemData.item.text}/>
+          )
+        }} />
+      </View>
+      </View>
+    </ImageBackground>
+  );
+}
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  appContainer: {
+    flex: 1,
+    paddingTop: 200,
+    paddingHorizontal: 16,
+  },
+  apphead: {
+    textAlign: 'center',
+    fontFamily: 'montserrat',
+    color: '#333300',
+    fontSize: 40,
+    fontWeight: 'bold' 
+  },
+  goalListContainer: {
+    flex: 10,
+    alignItems: 'center'
+  },
+});
+
+
+App.js
+
+import {useState} from 'react';
+import {View, TextInput, Button, StyleSheet } from 'react-native';
+export default GoalInput;
+function GoalInput(props) {
+    const [enteredGoalText, setEnteredText] = useState('');
+
+    function goalInputContainer(enteredText) {
+        setEnteredText(enteredText);
+    }
+    function addGoalHandler(){
+        props.onAddGoal(enteredGoalText);
+        setEnteredText('');
+    };
+
+    return(
+        <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput} 
+          placeholder="Your Course Goal" 
+          onChangeText={goalInputContainer} 
+          value={enteredGoalText}
+          />
+        <Button color="#46AAD5" title="Add Goal" onPress={addGoalHandler}/>
+      </View>   
+    );
+}
+
+
+const styles = StyleSheet.create({
+
+    inputContainer: {
+        flex: 2,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+        borderBottomWidth: 1,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        borderColor: '#ccc',
+    },
+    textInput: {
+      color: 'white',
+      borderWidth: 1,
+      borderColor: '#ccc',
+      marginRight: 10,
+      padding: 5,
+      width: '80%',
+    },
+  });
+
+
+GoalInput.js
+
+
+import { StyleSheet, View, Text} from "react-native";
+function GoalItem(props) {
+    return(
+        <View style={styles.goalItems}>
+            <Text style={styles.goalItems}>{props.text}</Text>
+        </View>
+      )
+};
+export default GoalItem;
+
+const styles = StyleSheet.create({
+    goalItems: {
+        fontSize: 24, 
+        fontWeight: 'bold', 
+        color: '#3D8C41',
+    },
+    goalText: {
+        fontSize: 18, 
+        color: 'white'
+    },
+  });
+
+GoalItem.js
